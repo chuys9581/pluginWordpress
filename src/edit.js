@@ -1,10 +1,11 @@
 import { Button, Modal, Placeholder } from '@wordpress/components';
-import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
+import { MediaUpload, MediaUploadCheck, RichText } from '@wordpress/block-editor';
 import { useState } from '@wordpress/element';
 
 const Edit = ( { attributes, setAttributes } ) => {
     const [ isOpen, setOpen ] = useState( false );
     const images = attributes.images || [];
+	const text = attributes.text || '';
 
     const openModal = () => setOpen( true );
     const closeModal = () => setOpen( false );
@@ -13,12 +14,14 @@ const Edit = ( { attributes, setAttributes } ) => {
         setAttributes( { images: [...images, ...newImages.slice( 0, 20 - images.length )] } );
     };
 
+	const onChangeText = ( newText ) => {
+        setAttributes( { text: newText } );
+    };
+
     return (
 		<>
 			<Placeholder
 				icon="format-gallery"
-				label="Galería personalizada"
-				instructions="Agrega hasta 20 imágenes"
 			>
 				<MediaUploadCheck>
 					<MediaUpload
@@ -34,6 +37,12 @@ const Edit = ( { attributes, setAttributes } ) => {
 						) }
 					/>
 				</MediaUploadCheck>
+				<RichText
+                    tagName="p"
+                    value={ text }
+                    onChange={ onChangeText }
+                    placeholder="Añade tu texto aquí..."
+                />
 			<div className="my-gallery-block">
 			   {images.slice(0, 3).map((img, index) => (
                 <div className={`image-${index === 0 ? 'large' : 'small'}`} key={img.id}>

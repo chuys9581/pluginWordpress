@@ -25,6 +25,7 @@ const Edit = ({
 }) => {
   const [isOpen, setOpen] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const images = attributes.images || [];
+  const text = attributes.text || '';
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
   const onSelectImages = newImages => {
@@ -32,10 +33,13 @@ const Edit = ({
       images: [...images, ...newImages.slice(0, 20 - images.length)]
     });
   };
+  const onChangeText = newText => {
+    setAttributes({
+      text: newText
+    });
+  };
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Placeholder, {
-    icon: "format-gallery",
-    label: "Galer\xEDa personalizada",
-    instructions: "Agrega hasta 20 im\xE1genes"
+    icon: "format-gallery"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUpload, {
     onSelect: onSelectImages,
     allowedTypes: ['image'],
@@ -47,7 +51,12 @@ const Edit = ({
     }) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
       onClick: open
     }, "Agregar im\xE1genes")
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+    tagName: "p",
+    value: text,
+    onChange: onChangeText,
+    placeholder: "A\xF1ade tu texto aqu\xED..."
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "my-gallery-block"
   }, images.slice(0, 3).map((img, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: `image-${index === 0 ? 'large' : 'small'}`,
@@ -139,6 +148,7 @@ const save = ({
   attributes
 }) => {
   const images = attributes.images || [];
+  const text = attributes.text || '';
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "my-gallery-block"
   }, images.slice(0, 3).map((img, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -147,7 +157,7 @@ const save = ({
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: img.url,
     alt: img.alt
-  }))));
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, text));
 };
 /* harmony default export */ __webpack_exports__["default"] = (save);
 
@@ -211,7 +221,7 @@ module.exports = window["wp"]["element"];
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"to-eatin/bloque-toeatin","version":"0.1.0","title":"MyCode - TO EAT IN","category":"widgets","icon":"store","description":"Un bloque que añade la estructura para las entradas de restaurant to eat in","example":{},"supports":{"html":false},"textdomain":"bloque-toeatin","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"to-eatin/bloque-toeatin","version":"0.1.0","title":"MyCode - TO EAT IN","category":"widgets","icon":"store","description":"Un bloque que añade la estructura para las entradas de restaurant to eat in","example":{},"supports":{"html":false},"textdomain":"bloque-toeatin","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","attributes":{"images":{"type":"array","default":[]},"text":{"type":"string","default":""}}}');
 
 /***/ })
 

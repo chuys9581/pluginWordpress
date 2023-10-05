@@ -1,5 +1,6 @@
 const save = ( { attributes } ) => {
     const images = attributes.images || [];
+    const text = attributes.text || '';
 
     return (
         <div className="my-gallery-block">
@@ -8,6 +9,7 @@ const save = ( { attributes } ) => {
                     <img src={img.url} alt={img.alt} />
                 </div>
             ))}
+            <p>{ text }</p>
         </div>
     );
 };
