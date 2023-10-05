@@ -1,0 +1,57 @@
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/style.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+@charset "UTF-8";
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+.wp-block-to-eatin-bloque-toeatin {
+  background-color: white;
+  color: black;
+  padding: 2px;
+}
+
+.my-gallery-block img {
+  max-width: 100%; /* Asegura que la imagen no sea más ancha que su contenedor */
+  height: auto; /* Mantiene la proporción de la imagen */
+}
+
+.my-gallery-modal img {
+  max-width: 100%; /* Asegura que las imágenes en el modal no sean demasiado grandes */
+  height: auto;
+}
+
+.my-gallery-block {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.image-large {
+  width: 100%;
+  height: 50rem; /* Ajusta este valor a tu gusto */
+  max-height: 100vh; /* Asegura que la imagen no sea más alta que la ventana del navegador */
+  margin-bottom: -14rem;
+}
+
+.image-small {
+  width: calc(50% - 10px);
+  height: 25rem; /* Ajusta este valor a tu gusto */
+  max-height: 100vh; /* Asegura que la imagen no sea más alta que la ventana del navegador */
+  margin-bottom: -13rem;
+}
+
+.my-gallery-modal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.my-gallery-modal img {
+  width: 33.33%;
+}
+
+/*# sourceMappingURL=style-index.css.map*/
