@@ -8,9 +8,8 @@
 	border: 1px dotted #f00;
 }
 
-.image-large {
-    width: 100%;
-    height: 50rem;
-    max-height: 100vh;
-    margin-bottom: -19rem;
+.small-images-container{
+	display: flex;
+	flex-direction: row;
 }
+

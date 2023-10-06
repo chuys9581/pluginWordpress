@@ -15,13 +15,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
 
 const Edit = ({
   attributes,
-  setAttributes
+  setAttributes,
+  categories
 }) => {
   const [isOpen, setOpen] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const images = attributes.images || [];
@@ -38,6 +42,13 @@ const Edit = ({
       text: newText
     });
   };
+
+  // Actualiza el atributo 'categories' cuando cambia la prop 'categories'
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setAttributes({
+      categories
+    });
+  }, [categories]);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Placeholder, {
     icon: "format-gallery"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUpload, {
@@ -51,21 +62,34 @@ const Edit = ({
     }) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
       onClick: open
     }, "Agregar im\xE1genes")
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container-all"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, categories), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container-text"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
     tagName: "p",
     value: text,
     onChange: onChangeText,
     placeholder: "A\xF1ade tu texto aqu\xED..."
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "my-gallery-block"
-  }, images.slice(0, 3).map((img, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: `image-${index === 0 ? 'large' : 'small'}`,
+  }, images.slice(0, 1).map((img, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `image-large`,
     key: img.id
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: img.url,
     alt: img.alt,
     onClick: openModal
-  }))))), isOpen && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "small-images-container"
+  }, images.slice(1, 3).map((img, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `image-small`,
+    key: img.id
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: img.url,
+    alt: img.alt,
+    onClick: openModal
+  }))))))), isOpen && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Modal, {
     title: "Galer\xEDa personalizada",
     onRequestClose: closeModal
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
@@ -76,7 +100,27 @@ const Edit = ({
     alt: img.alt
   })))));
 };
-/* harmony default export */ __webpack_exports__["default"] = (Edit);
+/* harmony default export */ __webpack_exports__["default"] = ((0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.withSelect)(select => {
+  const {
+    getEntityRecord
+  } = select('core');
+  const postType = select('core/editor').getCurrentPostType();
+  const postId = select('core/editor').getCurrentPostId();
+  const post = getEntityRecord('postType', postType, postId);
+  if (!post || !post.categories) {
+    return {
+      categories: ''
+    };
+  }
+  const categoryIds = post.categories;
+  const categoryEntities = categoryIds.map(id => getEntityRecord('taxonomy', 'category', id));
+
+  // Filtramos las categorías que aún no se han cargado.
+  const loadedCategories = categoryEntities.filter(Boolean);
+  return {
+    categories: loadedCategories.map(cat => cat.slug).join(', ')
+  };
+})(Edit));
 
 /***/ }),
 
@@ -149,15 +193,28 @@ const save = ({
 }) => {
   const images = attributes.images || [];
   const text = attributes.text || '';
+  const categories = attributes.categories || '';
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container-all"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, categories), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "my-gallery-block"
-  }, images.slice(0, 3).map((img, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: `image-${index === 0 ? 'large' : 'small'}`,
+  }, images.slice(0, 1).map((img, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `image-large`,
     key: img.id
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: img.url,
     alt: img.alt
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, text));
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "small-images-container"
+  }, images.slice(1, 3).map((img, index) => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: `image-small`,
+    key: img.id
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: img.url,
+    alt: img.alt
+  }))))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container-text"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, text)));
 };
 /* harmony default export */ __webpack_exports__["default"] = (save);
 
@@ -205,6 +262,16 @@ module.exports = window["wp"]["components"];
 
 /***/ }),
 
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["data"];
+
+/***/ }),
+
 /***/ "@wordpress/element":
 /*!*********************************!*\
   !*** external ["wp","element"] ***!
@@ -221,7 +288,7 @@ module.exports = window["wp"]["element"];
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"to-eatin/bloque-toeatin","version":"0.1.0","title":"MyCode - TO EAT IN","category":"widgets","icon":"store","description":"Un bloque que añade la estructura para las entradas de restaurant to eat in","example":{},"supports":{"html":false},"textdomain":"bloque-toeatin","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","attributes":{"images":{"type":"array","default":[]},"text":{"type":"string","default":""}}}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"to-eatin/bloque-toeatin","version":"0.1.0","title":"MyCode - TO EAT IN","category":"widgets","icon":"store","description":"Un bloque que añade la estructura para las entradas de restaurant to eat in","example":{},"supports":{"html":false},"textdomain":"bloque-toeatin","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js","attributes":{"images":{"type":"array","default":[]},"text":{"type":"string","default":""},"categories":{"type":"string","default":""}}}');
 
 /***/ })
 

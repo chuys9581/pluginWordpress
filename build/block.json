@@ -24,6 +24,10 @@
     "text": {
       "type": "string",
       "default": ""
+    },
+    "categories": {
+      "type": "string",
+      "default": ""
     }
   }
 }
