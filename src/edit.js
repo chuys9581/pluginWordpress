@@ -1,4 +1,4 @@
-import { Button, Modal, Placeholder } from '@wordpress/components';
+import { Button, Modal, Placeholder, SelectControl } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck, RichText } from '@wordpress/block-editor';
 import { useState, useEffect } from '@wordpress/element';
 import { withSelect } from '@wordpress/data';
@@ -7,6 +7,7 @@ const Edit = ( { attributes, setAttributes, categories } ) => {
     const [ isOpen, setOpen ] = useState( false );
     const images = attributes.images || [];
 	const text = attributes.text || '';
+    const stars = attributes.stars !== undefined ? attributes.stars : 0;
 
     const openModal = () => setOpen( true );
     const closeModal = () => setOpen( false );
@@ -17,6 +18,10 @@ const Edit = ( { attributes, setAttributes, categories } ) => {
 
 	const onChangeText = ( newText ) => {
         setAttributes( { text: newText } );
+    };
+
+    const onChangeStars = (newStars) => {
+        setAttributes({ stars: parseInt(newStars) });
     };
 
     // Actualiza el atributo 'categories' cuando cambia la prop 'categories'
@@ -45,6 +50,17 @@ const Edit = ( { attributes, setAttributes, categories } ) => {
 				</MediaUploadCheck>
 				<div className='container-all'>
 				<p>{ categories }</p>
+                    <SelectControl
+                        label="Estrellas"
+                        value={ stars }
+                        options={[
+                            { label: '0 estrellas', value: 0 },
+                            { label: '1 estrella', value: 1 },
+                            { label: '2 estrellas', value: 2 },
+                            { label: '3 estrellas', value: 3 },
+                        ]}
+                        onChange={ onChangeStars }
+                    />
 					<div className='container-text'>
 				<RichText
                     tagName="p"
@@ -104,4 +120,5 @@ export default withSelect( ( select ) => {
         categories: loadedCategories.map((cat) => cat.slug).join(', '),
     };
 } )( Edit );
+
 

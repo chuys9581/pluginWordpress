@@ -28,6 +28,10 @@
     "categories": {
       "type": "string",
       "default": ""
+    },
+    "stars": {
+      "type": "number",
+      "default": 0
     }
   }
 }
